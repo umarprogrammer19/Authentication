@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     cause: "Email Do Not Match",
                 });
 
-                const user = { email, password };
+                const user = { email, id: "abc123" };
                 if (password !== "passcode") throw new CredentialsSignin({
                     cause: "Password Does Not Match",
                 });
