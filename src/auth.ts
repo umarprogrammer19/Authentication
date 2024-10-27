@@ -28,10 +28,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     cause: "Invalid Email Or Password",
                 });
 
-                if (password !== "passcode") throw new CredentialsSignin({
-                    cause: "Password Does Not Match",
+                const isMatch = compare(password, user.password);
+
+                if (!isMatch) throw new CredentialsSignin({
+                    cause: "Invalid Email Or Password",
                 });
-                else return user;
+                else return { name: user.name, email: user.email, id: user._id };
+
             },
         })
     ]
