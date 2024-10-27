@@ -18,6 +18,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 });
 
                 const user = await User.findOne({ email }).select("+password");
+
+                if (!user) throw new CredentialsSignin({
+                    cause: "Invalid Email Or Password",
+                });
+
+                if (!user.password) throw new CredentialsSignin({
+                    cause: "Invalid Email Or Password",
+                });
+
                 if (password !== "passcode") throw new CredentialsSignin({
                     cause: "Password Does Not Match",
                 });
