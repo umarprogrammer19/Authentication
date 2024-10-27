@@ -10,11 +10,16 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.453.0",
     "mongoose": "^8.7.3",
     "next": "14.2.16",
     "next-auth": "^5.0.0-beta.25",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
