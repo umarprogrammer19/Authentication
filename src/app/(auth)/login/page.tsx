@@ -18,7 +18,7 @@ export default function Login() {
                     </form>
                 </CardContent>
                 <CardFooter>
-                    <Link href="/">Dont have an account? Sign Up</Link>
+                    <Link href="/signup">Dont have an account? Sign Up</Link>
                 </CardFooter>
             </Card>
         </div>
