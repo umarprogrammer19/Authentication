@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";
+import { toast } from "sonner";
 
 export default function Login() {
     const loginHandler = async (formData: FormData) => {
         "use server";
-        const email = formData.get("email") as string | undefined;
-        const password = formData.get("password") as string | undefined;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
         if (!email || !password) throw new Error("Email and password are required");
         try {
             await signIn("credentials", {
@@ -30,7 +31,12 @@ export default function Login() {
                     <CardTitle>Login</CardTitle>
                 </CardHeader>
                 <CardContent >
-                    <form action={loginHandler} className="flex flex-col gap-4">
+                    <form action={async (formData) => {
+                        const email = formData.get("email") as string | undefined;
+                        const password = formData.get("password") as string | undefined;
+                        if (!email || !password) toast.error("Email and password are required");
+                        await loginHandler(formData)
+                    }} className="flex flex-col gap-4">
                         <Input type="email" placeholder="Email" name="email" />
                         <Input type="password" placeholder="Password" name="password" />
                         <Button type="submit">Login</Button>
