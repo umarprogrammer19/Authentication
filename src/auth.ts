@@ -2,6 +2,7 @@ import NextAuth, { CredentialsSignin } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
 import { User } from "./models/userModels";
 import { compare } from "bcryptjs";
+import { connectToDatabase } from "./lib/utils";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -18,6 +19,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     cause: "Please Provide Both Email And Password",
                 });
 
+                // Connect To Databse
+                await connectToDatabase();
+                
                 const user = await User.findOne({ email }).select("+password");
 
                 if (!user) throw new CredentialsSignin({
@@ -34,8 +38,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     cause: "Invalid Email Or Password",
                 });
                 else return { name: user.name, email: user.email, id: user._id };
-
             },
         })
-    ]
+    ],
+    pages: {
+        signIn: "/login",
+    }
 }) 

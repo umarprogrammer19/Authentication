@@ -2,8 +2,27 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { signIn } from "@/auth";
+import { CredentialsSignin } from "next-auth";
 
 export default function Login() {
+    const loginHandler = async (formData: FormData) => {
+        "use server";
+        const email = formData.get("email") as string | undefined;
+        const password = formData.get("password") as string | undefined;
+        if (!email || !password) throw new Error("Email and password are required");
+        try {
+            await signIn("credentials", {
+                email,
+                password,
+                redirect: true,
+                redirectTo: "/"
+            })
+        } catch (error) {
+            const err = error as CredentialsSignin;
+            console.log(err.message);
+        }
+    }
     return (
         <div className="flex justify-center items-center h-dvh">
             <Card>
@@ -11,9 +30,9 @@ export default function Login() {
                     <CardTitle>Login</CardTitle>
                 </CardHeader>
                 <CardContent >
-                    <form className="flex flex-col gap-4">
-                        <Input type="email" placeholder="Email" />
-                        <Input type="password" placeholder="Password" />
+                    <form action={loginHandler} className="flex flex-col gap-4">
+                        <Input type="email" placeholder="Email" name="email" />
+                        <Input type="password" placeholder="Password" name="password" />
                         <Button type="submit">Login</Button>
                     </form>
                 </CardContent>
