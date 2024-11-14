@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { connectToDatabase } from "@/lib/utils";
 import { User } from "@/models/userModels";
 import { hash } from "bcryptjs";
 import Link from "next/link";
@@ -16,6 +17,7 @@ export default function SignUp() {
         if (!name || !email || !password) {
             throw new Error("Please fill in all fields");
         }
+        await connectToDatabase();
         const user = await User.findOne({ email });
         if (user) {
             throw new Error("Email already in use");
