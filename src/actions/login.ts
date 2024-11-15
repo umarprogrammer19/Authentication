@@ -12,13 +12,13 @@ export const loginHandler = async (email: string, password: string): Promise<str
             email,
             password,
             redirect: true,
-            callbackUrl: "/",
+            redirectTo: "/",
         });
 
         if (!response) {
             throw new Error("Sign-in failed. Please try again.");
         }
-
+        
     } catch (error) {
         if (error instanceof Error) {
             return error.message;
