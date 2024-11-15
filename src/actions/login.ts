@@ -1,7 +1,6 @@
 "use server";
 
 import { signIn } from "@/auth";
-
 export const loginHandler = async (email: string, password: string): Promise<string | void> => {
     if (!email || !password) {
         throw new Error("Both email and password are required.");
@@ -11,8 +10,7 @@ export const loginHandler = async (email: string, password: string): Promise<str
         const response = await signIn("credentials", {
             email,
             password,
-            redirect: true,
-            redirectTo: "/",
+            redirect: false,
         });
 
         if (!response) {
