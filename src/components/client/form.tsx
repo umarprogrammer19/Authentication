@@ -7,31 +7,40 @@ import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
     const router = useRouter();
-    return (
-        <form action={async (formData) => {
-            const email = formData.get("email") as string;
-            const password = formData.get("password") as string;
 
-            if (!email || !password) return toast.error("Email and password are required");
-            const toastId = toast.loading("Logging In");
+    const handleSubmit = async (formData: FormData) => {
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+
+        if (!email || !password) {
+            toast.error("Email and password are required");
+            return;
+        }
+
+        const toastId = toast.loading("Logging in...");
+        try {
             const error = await loginHandler(email, password);
 
             if (!error) {
-                toast.success("Login successful", {
-                    id: toastId,
-                });
+                toast.success("Login successful", { id: toastId });
                 router.refresh();
+            } else {
+                toast.error(error, { id: toastId });
             }
-            else {
-                toast.error(String(error), {
-                    id: toastId,
-                });
-            };
+        } catch (err) {
+            console.error("Login error:", err);
+            toast.error("Something went wrong. Please try again.", { id: toastId });
+        }
+    };
 
-        }} className="flex flex-col gap-4">
-            <Input type="email" placeholder="Email" name="email" />
-            <Input type="password" placeholder="Password" name="password" />
+    return (
+        <form
+            action={(formData) => handleSubmit(formData)}
+            className="flex flex-col gap-4"
+        >
+            <Input type="email" placeholder="Email" name="email" required />
+            <Input type="password" placeholder="Password" name="password" required />
             <Button type="submit">Login</Button>
         </form>
-    )
+    );
 }
