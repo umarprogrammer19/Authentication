@@ -17,6 +17,7 @@ type Credentials = {
     password: string | undefined;
 };
 
+// User Objects
 type UserObject = {
     name: string;
     email: string;
@@ -64,7 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         cause: ERROR_MESSAGES.INVALID_CREDENTIALS,
                     });
                 }
-
+                // Check if password is matched or not
                 const isMatch = await compare(password, user.password);
 
                 if (!isMatch) {
